@@ -1,20 +1,29 @@
-class Leader {
-  final String name;
-  final String gymName;
-  final String badgeUrl;
-
-  Leader({required this.name, required this.gymName, required this.badgeUrl});
-}
+import '../models/leader_model.dart';
 
 class LeaderRepository {
   List<Leader> getLeadersByGame(String gameName) {
-    // Ejemplo para juegos de Kanto (red, blue, yellow)
-    if (gameName.contains('red') || gameName.contains('blue')) {
+    // Si el juego es de la primera generación
+    if (gameName.contains('red') || gameName.contains('blue') || gameName.contains('yellow')) {
       return [
-        Leader(name: "Brock", gymName: "Gimnasio Plateada", badgeUrl: "URL_MEDALLA_ROCA"),
-        Leader(name: "Misty", gymName: "Gimnasio Celeste", badgeUrl: "URL_MEDALLA_CASCADA"),
+        Leader(
+          name: "Brock",
+          gymName: "Gimnasio Plateada",
+          badgeName: "Medalla Roca",
+          imageUrl: "https://play.pokemonshowdown.com/sprites/trainers/brock.png",
+          badgeUrl: "https://archives.bulbagardenoforce.net/media/upload/thumb/d/dd/Boulder_Badge.png/50px-Boulder_Badge.png",
+        ),
+        Leader(
+          name: "Misty",
+          gymName: "Gimnasio Celeste",
+          badgeName: "Medalla Cascada",
+          imageUrl: "https://play.pokemonshowdown.com/sprites/trainers/misty.png",
+          badgeUrl: "https://archives.bulbagardenoforce.net/media/upload/thumb/9/9c/Cascade_Badge.png/50px-Cascade_Badge.png",
+        ),
+        // Puedes agregar los 8 líderes aquí...
       ];
     }
-    return []; // Retornar otros según el juego
+    
+    // Por defecto retornamos una lista vacía o de otra región
+    return [];
   }
 }

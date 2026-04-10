@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pokemon_app/presentation/screens/team_screen.dart';
 import 'package:my_pokemon_app/presentation/tabs/items_tab.dart';
+import 'package:my_pokemon_app/presentation/tabs/leaders_tab.dart';
 import '../../logic/blocs/game/game_bloc.dart';
 import '../../logic/blocs/game/game_state.dart';
 import '../../logic/blocs/pokemon/pokemon_bloc.dart';
@@ -25,8 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // sino un botón de acción rápida que definiremos luego.
   final List<Widget> _tabs = [
     const _PokemonListTab(),   // Vista 1: Listado por juego
-    const ItemsTab() // Vista 2
-    const Center(child: Text("Líderes (Próximamente)")), // Vista 3
+    const ItemsTab(), // Vista 2
+    const LeadersTab(), // Vista 3
     const FavoritesTab(),      // Vista 4: Tus favoritos (Ya integrada)
   ];
 

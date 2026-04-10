@@ -36,7 +36,7 @@ void main() async {
       gameRepo: gameRepo,
       pokemonRepo: pokemonRepo,
       favoriteRepo: favoriteRepo,
-      itemRepo: itemRepo
+      itemRepo: itemRepo,
       userRepo:userRepo
     ),
   );
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => UserBloc()),
+        BlocProvider(create: (_) => UserBloc(userRepo)),
         BlocProvider(create: (_) => GameBloc(gameRepo)..add(LoadGamesEvent())),
         BlocProvider(create: (_) => PokemonBloc(pokemonRepo)),
         BlocProvider(
