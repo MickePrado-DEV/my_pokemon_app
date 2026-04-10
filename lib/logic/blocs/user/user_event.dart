@@ -9,3 +9,5 @@ class SaveUserEvent extends UserEvent {
   final Gender gender;
   SaveUserEvent(this.name, this.gender);
 }
+
+class LoadUserEvent extends UserEvent {}
