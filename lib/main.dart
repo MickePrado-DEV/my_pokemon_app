@@ -9,46 +9,67 @@ import 'package:my_pokemon_app/logic/blocs/favorites/favorites_event.dart';
 import 'package:my_pokemon_app/logic/blocs/game/game_bloc.dart';
 import 'package:my_pokemon_app/logic/blocs/game/game_event.dart';
 import 'package:my_pokemon_app/logic/blocs/pokemon/pokemon_bloc.dart';
+import 'package:my_pokemon_app/logic/blocs/team/team_bloc.dart';
 import 'logic/blocs/user/user_bloc.dart';
 import 'logic/blocs/user/user_state.dart';
 import 'presentation/screens/onboarding_screen.dart';
 import 'presentation/screens/dashboard_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  // 1. CRUCIAL: Asegura que los canales nativos (SharedPreferences, Dio) estén listos
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 2. Inicializamos instancias de una sola vez
+  final dioClient = DioClient();
+  final gameRepo = GameRepository(dioClient);
+  final pokemonRepo = PokemonRepository(dioClient);
+  final favoriteRepo = FavoriteRepository();
+
+  runApp(
+    MyApp(
+      gameRepo: gameRepo,
+      pokemonRepo: pokemonRepo,
+      favoriteRepo: favoriteRepo,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GameRepository gameRepo;
+  final PokemonRepository pokemonRepo;
+  final FavoriteRepository favoriteRepo;
 
- 
-
+  const MyApp({
+    super.key,
+    required this.gameRepo,
+    required this.pokemonRepo,
+    required this.favoriteRepo,
+  });
 
   @override
   Widget build(BuildContext context) {
-     final dioClient = DioClient();
-     final gameRepo = GameRepository(dioClient);
-     final pokemonRepo = PokemonRepository(dioClient);
-     final favoriteRepo = FavoriteRepository();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => UserBloc()),
+        BlocProvider(create: (_) => GameBloc(gameRepo)..add(LoadGamesEvent())),
+        BlocProvider(create: (_) => PokemonBloc(pokemonRepo)),
         BlocProvider(
-                   create: (_) => GameBloc(gameRepo)..add(LoadGamesEvent()),
-            ),
-            BlocProvider(create: (_) => PokemonBloc(pokemonRepo) ),
-            BlocProvider(
           create: (_) => FavoritesBloc(favoriteRepo)..add(LoadFavoritesEvent()),
         ),
+        BlocProvider(create: (_) => TeamBloc()),
       ],
       child: MaterialApp(
         title: 'PokeApp Flutter',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.red, useMaterial3: true),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+          useMaterial3: true,
+        ),
         home: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
-            // Si el usuario ya se registró, va al Dashboard. Si no, al Onboarding.
-            return state.isRegistered ? const DashboardScreen() : const OnboardingScreen();
+            return state.isRegistered 
+                ? const DashboardScreen() 
+                : const OnboardingScreen();
           },
         ),
       ),

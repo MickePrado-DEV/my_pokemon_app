@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_pokemon_app/presentation/screens/team_screen.dart';
 import '../../logic/blocs/game/game_bloc.dart';
 import '../../logic/blocs/game/game_state.dart';
 import '../../logic/blocs/pokemon/pokemon_bloc.dart';
@@ -55,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: Colors.red,
           onPressed: () {
             // Aquí irá la lógica de "Mi Equipo"
-            print("Abrir equipo de 6");
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const TeamScreen()),);
           },
           child: Image.network(
             'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/1200px-Pok%C3%A9_Ball_icon.svg.png',
