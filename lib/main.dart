@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pokemon_app/core/network/dio_client.dart';
+import 'package:my_pokemon_app/data/repositories/favorite_repository.dart';
 import 'package:my_pokemon_app/data/repositories/game_repository.dart';
 import 'package:my_pokemon_app/data/repositories/pokemon_repository.dart';
+import 'package:my_pokemon_app/logic/blocs/favorites/favorites_bloc.dart';
+import 'package:my_pokemon_app/logic/blocs/favorites/favorites_event.dart';
 import 'package:my_pokemon_app/logic/blocs/game/game_bloc.dart';
 import 'package:my_pokemon_app/logic/blocs/game/game_event.dart';
 import 'package:my_pokemon_app/logic/blocs/pokemon/pokemon_bloc.dart';
@@ -26,13 +29,17 @@ class MyApp extends StatelessWidget {
      final dioClient = DioClient();
      final gameRepo = GameRepository(dioClient);
      final pokemonRepo = PokemonRepository(dioClient);
+     final favoriteRepo = FavoriteRepository();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => UserBloc()),
         BlocProvider(
                    create: (_) => GameBloc(gameRepo)..add(LoadGamesEvent()),
             ),
-            BlocProvider(create: (_) => PokemonBloc(pokemonRepo) )
+            BlocProvider(create: (_) => PokemonBloc(pokemonRepo) ),
+            BlocProvider(
+          create: (_) => FavoritesBloc(favoriteRepo)..add(LoadFavoritesEvent()),
+        ),
       ],
       child: MaterialApp(
         title: 'PokeApp Flutter',
